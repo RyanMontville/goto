@@ -1,0 +1,14 @@
+---
+// src/pages/index.astro
+
+import Layout from '../layouts/Layout.astro';
+import MissingInfo from '../components/missingInfo.astro';
+
+const pageTitle = "goto";
+---
+
+<Layout title={pageTitle}>
+  <main>
+    <MissingInfo />
+  </main>
+</Layout>
