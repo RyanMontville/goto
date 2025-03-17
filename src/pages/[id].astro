@@ -4,31 +4,31 @@ import Layout from '../layouts/Layout.astro';
 
 export async function getStaticPaths() {
   const link = [
-    { id: 'bicl', title: 'Broadway in Chicago Lottery', url: 'https://www.broadwayinchicago.com/broadway-in-chicago-lottery/' },
-    { id: 'post-2', title: 'Second Post', content: 'Content of the second post.' },
-    { id: 'post-3', title: 'Third Post', content: 'Content of the third post.' },
+    { id: 'bicl', title: 'QnJvYWR3YXkgaW4gQ2hpY2FnbyBMb3R0ZXJ5', url: 'aHR0cHM6Ly93d3cuYnJvYWR3YXlpbmNoaWNhZ28uY29tL2Jyb2Fkd2F5LWluLWNoaWNhZ28tbG90dGVyeS8=' },
   ];
+
+  const decodeBase64Url = (base64Url: string) => {
+    try {
+      return atob(base64Url);
+    } catch (error) {
+      console.error('Error decoding Base64 URL:', error);
+      return '';
+    }
+  };
 
   return link.map((link) => ({
     params: { id: link.id },
-    props: { link }, // Pass data as props to the page
+    props: {
+      title: decodeBase64Url(link.title),
+      decodedUrl: decodeBase64Url(link.url),
+    },
   }));
 }
 
-function decodeBase64(encodedString: string) {
-  try {
-    const decodedString = atob(encodedString);
-    return decodedString;
-  } catch (error) {
-    console.error("Error decoding Base64 string:", error);
-    return null;
-  }
-}
-
-
-const { link } = Astro.props;
+const { title, decodedUrl } = Astro.props;
 ---
 
-<Layout title={link.title} redirectUrl={link.url}>
-  <h1>Redirecting to {link.title} ...</h1>
+<Layout title={title} redirectUrl={decodedUrl}>
+  <h1>{title}</h1>
+  <p>Redirecting to <a href={decodedUrl}>{title}</a></p>
 </Layout>
