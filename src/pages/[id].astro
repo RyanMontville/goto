@@ -7,11 +7,11 @@ export async function getStaticPaths() {
     { id: 'bicl', title: 'QnJvYWR3YXkgaW4gQ2hpY2FnbyBMb3R0ZXJ5', url: 'aHR0cHM6Ly93d3cuYnJvYWR3YXlpbmNoaWNhZ28uY29tL2Jyb2Fkd2F5LWluLWNoaWNhZ28tbG90dGVyeS8=' },
   ];
 
-  const decodeBase64Url = (base64Url: string) => {
+  const decodeString = (endodedString: string) => {
     try {
-      return atob(base64Url);
+      return atob(endodedString);
     } catch (error) {
-      console.error('Error decoding Base64 URL:', error);
+      console.error('Error decoding string:', error);
       return '';
     }
   };
@@ -19,16 +19,16 @@ export async function getStaticPaths() {
   return link.map((link) => ({
     params: { id: link.id },
     props: {
-      title: decodeBase64Url(link.title),
-      decodedUrl: decodeBase64Url(link.url),
+      decodedTitle: decodeString(link.title),
+      decodedUrl: decodeString(link.url),
     },
   }));
 }
 
-const { title, decodedUrl } = Astro.props;
+const { decodedTitle, decodedUrl } = Astro.props;
 ---
 
-<Layout title={title} redirectUrl={decodedUrl}>
-  <h1>{title}</h1>
-  <p>Redirecting to <a href={decodedUrl}>{title}</a></p>
+<Layout title={decodedTitle} redirectUrl={decodedUrl}>
+  <h1>{decodedTitle}</h1>
+  <p>Redirecting to <a href={decodedUrl}>{decodedTitle}</a></p>
 </Layout>
